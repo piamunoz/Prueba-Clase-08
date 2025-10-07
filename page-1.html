@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Aves Chilenas</title>
+    <link href="style.css" rel="stylesheet"/>
+</head>
+<body>
+    <nav>
+        <h1>Aves Chilenas</h1>
+        <ul>
+            <li><a href="index.html">Tipos de Aves Chilenas</a></li>
+            <li><a href="page-1.html" class="active">Pájaros Cantores</a></li>
+            <li><a href="page-2.html">Aves Playeras</a></li>
+            <li><a href="page-3.html">Aves Acuáticas</a></li>
+            <li><a href="page-4.html">Aves Rapaces</a></li>
+            <li><a href="page-5.html">Pelícanos</a></li>
+            <li><a href="page-6.html">Colibríes</a></li>
+        </ul>
+    </nav>
+    <div class="container">
+        <h2>Pájaros Cantores</h2>
+        <p>Los pájaros cantores (paseriformes) son un diverso orden de aves que abarca más de la mitad de las especies de aves del mundo. </p>
+        <div class="grid" id="grid"></div>
+    </div>
+    <footer>
+        <p>Desarrollado por <a href="#" target="_blank">Pía Muñoz</a> &copy; 2025</p>
+    </footer>
+    <script>
+        const grid = document.getElementById('grid');
+
+        async function datos(raw) {
+            try {
+                let consulta = await fetch(raw);
+                let data = await consulta.json();
+                console.log(data);
+                let conteo = 1;
+                data.forEach((a) => {
+                     
+        if(a.info.order.value.includes("Passeriformes")){
+                         
+                         
+                    grid.innerHTML += `
+                        <div class="grid-item">
+                            <img src="${a.image.url.replace("http://www.buscaves.cl/", "https://buscaves.cl/")}" alt="${a.names.spanish}"/>
+                            <p>${conteo}. <em>${a.names.spanish}</em></p>
+                            <small>${a.names.latin}</small>
+                        </div>
+                    `;
+                    conteo++; 
+                    };
+                });
+            } catch (error) {
+                console.error('Error al cargar los datos:', error);
+            }
+        }
+
+        datos("https://raw.githubusercontent.com/NinjasCL/chileanbirds-dataset/refs/heads/master/data/birds.json");
+    </script>
+</body>
+</html>
